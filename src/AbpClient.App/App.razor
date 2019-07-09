@@ -1,0 +1,25 @@
+﻿<Router AppAssembly="typeof(Program).Assembly">
+    <NotFoundContent>
+        <LoadingBackground ShowLogoBox="true">
+            <label>Sorry, there's nothing at this address.</label><br />
+            <MatButton Link="/">Home</MatButton>
+        </LoadingBackground>
+    </NotFoundContent>
+</Router>
+<MatToastContainer />
+
+@*<MatToastContainer />
+
+    <MatThemeProvider Theme="@theme">
+        <Router AppAssembly=typeof(MatBlazor.Demo.Pages.Index).Assembly />
+    </MatThemeProvider>
+
+
+    @functions
+    {
+
+        MatTheme theme = new MatTheme()
+        {
+        };
+
+    }*@

@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Components;
+@inject IUriHelper uriHelper
+
+<nav class="app-sidebar">
+    <MatListGroup>
+        <MatList SingleSelection="true">
+            <MatListItem Href="@uriHelper.ToAbsoluteUri(" ").AbsoluteUri">
+                <MatIcon>home</MatIcon> <span>Home page</span>
+            </MatListItem>
+            <MatListItem Href="@uriHelper.ToAbsoluteUri("dashboard").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+                <MatIcon>bar_chart</MatIcon> <span>Dashboard</span>
+            </MatListItem>
+            <MatListItem Href="@uriHelper.ToAbsoluteUri("fetchdata").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+                <MatIcon>cloud_download</MatIcon> <span>Fetch data</span>
+            </MatListItem>
+            <MatListItem Href="@uriHelper.ToAbsoluteUri("email").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+                <MatIcon>mail_outline</MatIcon> <span>Email</span>
+            </MatListItem>
+            <MatListItem Href="@uriHelper.ToAbsoluteUri("admin/users").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+                <MatIcon>supervisor_account</MatIcon> <span>Users</span>
+            </MatListItem>
+            <MatListItem Href="@uriHelper.ToAbsoluteUri("contributors").AbsoluteUri">
+                <MatIcon>people</MatIcon> <span>Contributors</span>
+            </MatListItem>
+        </MatList>
+    </MatListGroup>
+</nav>
+
+@functions {
+    [Parameter]
+    public IdentityAuthenticationStateProvider authState { get; set; }
+
+    public bool IsLoggedIn;
+
+    protected override async Task OnInitAsync()
+    {
+        IsLoggedIn = await authState.IsLoggedIn();
+    }
+}
