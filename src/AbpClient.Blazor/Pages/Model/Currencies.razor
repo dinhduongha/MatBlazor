@@ -1,0 +1,158 @@
+﻿@page "/currency"
+@using BlazorBoilerplate.Shared
+@using Bamboo.AbpClient
+@using AbpHelper.Users.Dto
+@using AbpClient.Shared.Extensions
+@using AbpCommon.Dto
+@inject IdentityAuthenticationStateProvider authState
+@inject HttpClient Http
+@inject IMatToaster matToaster
+@inject AbpCoreService  abpCoreService
+
+<h1>Currency</h1>
+@if (IsLoggedIn)
+{
+    @if (currencies == null)
+    {
+        <LoadingBackground ShowLogoBox="true">
+            <label>Loading Users</label>
+        </LoadingBackground>
+    }
+    else
+    {
+        <MatTable Class="mat-elevation-z5" Items="@currencies" LoadInitialData="true" Striped="true" RequestApiOnlyOnce="true" DebounceMilliseconds="150">
+            <MatTableHeader>
+                <th><MatButton Icon="person_add" Label="New Currency" OnClick="@((e) => OpenDialog())"></MatButton></th>
+
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+
+            </MatTableHeader>
+            <MatTableRow>
+                <td>
+                    <div style="width:130px;">
+                        <MatIconButton Icon="edit" OnClick="@((e) => Edit(@context.Id))"></MatIconButton>
+                        <MatIconButton Icon="delete" OnClick="@((e) => Delete(@context.Id))"></MatIconButton>
+                    </div>
+                </td>
+                <td>@context.Id</td>
+                <td>@context.Name</td>
+                <td>@context.Description</td>
+            </MatTableRow>
+        </MatTable>
+    }
+
+    <MatDialog @bind-IsOpen="@dialogIsOpen">
+        <MatDialogTitle>Create Currency</MatDialogTitle>
+        <MatDialogContent>
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField @bind-value="@createCurrency.Name" Label="Name" Icon="mail_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-value="@createCurrency.Description" Label="Description" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+            </fieldset>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { dialogIsOpen = false; })">Cancel</MatButton>
+            <MatButton OnClick="@CreateCurrency">Create Currency</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+
+    <MatDialog @bind-IsOpen="@dialogIsEdit">
+        <MatDialogTitle>Edit Currency</MatDialogTitle>
+        <MatDialogContent>
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField @bind-value="@objRef.Name" Label="Name" Icon="mail_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-value="@objRef.Description" Label="Description" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+            </fieldset>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { dialogIsEdit = false; })">Cancel</MatButton>
+            <MatButton OnClick="@(e => { dialogIsEdit = false; })">Update</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+}
+else
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>Unauthorized.. Please Login</label>
+    </LoadingBackground>
+}
+
+@functions {
+    bool dialogIsOpen = false;
+    bool dialogIsEdit = false;
+    protected bool IsLoggedIn;
+    CurrencyDto[] currencies;
+    List<CurrencyDto> currenciesDtos { get; set; } = new List<CurrencyDto>();
+    CurrencyDto objRef = new CurrencyDto { Id=1, Name = "VND", Description = "VN Dong" };
+    CreateCurrencyDto createCurrency { get; set; } = new CreateCurrencyDto();
+    protected override async Task OnInitAsync()
+    {
+        IsLoggedIn = await authState.IsLoggedIn();
+        var objs = await abpCoreService.CurrencyGetAllAsync();
+        if (objs != null && objs.Count > 0)
+        {
+            // userDtos = usersTmp;
+            currencies = objs.ToArray<CurrencyDto>();
+
+            Console.WriteLine($"Total User:{objs.Count}");
+        }
+    }
+
+    public void OpenDialog()
+    {
+        dialogIsOpen = true;
+    }
+
+    async Task CreateCurrency()
+    {
+        dialogIsOpen = false;
+        try
+        {
+            //Todo Create AdminUserModel and update this for AdminUserModel
+            //await authState.Register(registerParameters);
+            matToaster.Add("Not Implemented", MatToastType.Success, "Currency Creation Sucessful");
+            //Todo Add User & refresh user list
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "Currency Creation Failed");
+        }
+        await Task.CompletedTask;
+    }
+
+    public void Edit(int Id)
+    {
+        //objRef = null;
+        foreach (var obj in currencies)
+        {
+            if (obj.Id == Id)
+            {
+                objRef = obj;
+                break;
+            }
+        }
+        //matToaster.Add($"Not Implemented Edit {Id}", MatToastType.Danger, "User Edit Failed");
+        Console.Write($"Edit Currency:{Id}");
+
+        if (objRef != null)
+        {
+            dialogIsEdit = true;
+            Console.Write($"Edit Currency:{Id} - {objRef.Id}");
+        }
+        StateHasChanged();
+    }
+
+    public void Delete(int Id)
+    {
+        matToaster.Add($"Not Implemented {Id}", MatToastType.Danger, "Currency Delete Failed");
+    }
+}

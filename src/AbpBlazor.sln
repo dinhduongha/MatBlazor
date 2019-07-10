@@ -13,6 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbpClient.App", "AbpClient.
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbpClient.Shared", "AbpClient.Shared\AbpClient.Shared.csproj", "{F35F3C52-C7B0-4D15-9CCA-CC6897BFAC2C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5C4E1EA-88B7-4528-BF8D-0BAC8B7EABE7} = {B5C4E1EA-88B7-4528-BF8D-0BAC8B7EABE7}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbpClient.Blazor", "AbpClient.Blazor\AbpClient.Blazor.csproj", "{3A317437-ED70-4100-A6A7-E1B173618289}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -20,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbpClient.Blazor", "AbpClie
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbpClient.Common", "AbpClient.Common\AbpClient.Common.csproj", "{BF4D278A-E8DF-4B34-BE57-8F9E787146D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbpClient.Core", "AbpClient.Core\AbpClient.Core.csproj", "{B5C4E1EA-88B7-4528-BF8D-0BAC8B7EABE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +56,10 @@ Global
 		{BF4D278A-E8DF-4B34-BE57-8F9E787146D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF4D278A-E8DF-4B34-BE57-8F9E787146D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF4D278A-E8DF-4B34-BE57-8F9E787146D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5C4E1EA-88B7-4528-BF8D-0BAC8B7EABE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5C4E1EA-88B7-4528-BF8D-0BAC8B7EABE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5C4E1EA-88B7-4528-BF8D-0BAC8B7EABE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5C4E1EA-88B7-4528-BF8D-0BAC8B7EABE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

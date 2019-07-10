@@ -7,10 +7,10 @@ using MatBlazor;
 
 //using Blazored.LocalStorage;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
-
-using BlazorBoilerplate.Client.Services.Contracts;
-using BlazorBoilerplate.Client.Services.Implementations;
-using BlazorBoilerplate.Client.States;
+using Bamboo.AbpClient;
+using BlazorBoilerplate.Shared.Services.Contracts;
+using BlazorBoilerplate.Shared.Services.Implementations;
+using BlazorBoilerplate.Shared.States;
 
 namespace AbpClient.App
 {
@@ -37,6 +37,8 @@ namespace AbpClient.App
                 config.MaximumOpacity = 95;
                 config.VisibleStateDuration = 3000;
             });
+            services.AddSingleton<IAbpClient, AbpClientCore>();
+            services.AddSingleton<AbpCoreService>();
 
             //services.AddSingleton<AppModel>();
             //services.AddScoped<UserAppModel>();

@@ -1,9 +1,11 @@
 ﻿@page "/admin/users"
 @using BlazorBoilerplate.Shared
+@using Bamboo.AbpClient
+@using AbpHelper.Users.Dto
 @inject IdentityAuthenticationStateProvider authState
 @inject HttpClient Http
 @inject IMatToaster matToaster
-
+@inject AbpCoreService  abpCoreService
 <h1>Users</h1>
 <p>This admin page is under construction. It is not connected to the live dataset and is not fully functional.</p>
 @if (IsLoggedIn)
@@ -16,8 +18,7 @@
     }
     else
     {
-        <MatTable Class="mat-elevation-z5" Items="@users" LoadInitialData="true" Striped="true" RequestApiOnlyOnce="true" ApiUrl="api/users"
-                  DebounceMilliseconds="150">
+        <MatTable Class="mat-elevation-z5" Items="@users" LoadInitialData="true" Striped="true" RequestApiOnlyOnce="true" DebounceMilliseconds="150">
             <MatTableHeader>
                 <th><MatButton Icon="person_add" Label="New User" OnClick="@((e) => OpenDialog())"></MatButton></th>
                 <th>User Name</th>
@@ -27,18 +28,22 @@
             <MatTableRow>
                 <td>
                     <div style="width:130px;">
-                        <MatIconButton Icon="edit" OnClick="@((e) => Edit())"></MatIconButton>
-                        <MatIconButton Icon="delete" OnClick="@((e) => Delete())"></MatIconButton>
+                        <MatIconButton Icon="edit" OnClick="@((e) => Edit(@context.Id))"></MatIconButton>
+                        <MatIconButton Icon="delete" OnClick="@((e) => Delete(@context.Id))"></MatIconButton>
                     </div>
                 </td>
                 <td><div style="width:130px;">@context.UserName</div></td>
                 <td>@context.Email</td>
                 <td>
                     <MatChipSet>
-                        @foreach (var role in @context.Roles)
-                        {
-                            <MatChip Label="@role"></MatChip>
-                        }                      
+                        @if (@context.Roles != null)
+                                {
+                            @foreach (var role in @context.Roles)
+                                    {
+                                <MatChip Label="@role"></MatChip>
+                                    }
+                            /**/
+                                }
                     </MatChipSet>
                 </td>
             </MatTableRow>
@@ -65,6 +70,27 @@
             <MatButton OnClick="@CreateUser">Create User</MatButton>
         </MatDialogActions>
     </MatDialog>
+
+    <MatDialog @bind-IsOpen="@dialogIsEdit">
+        <MatDialogTitle>Edit User</MatDialogTitle>
+        <MatDialogContent>
+            <fieldset>
+                <div class="form-group">
+                    <MatTextField @bind-value="@objRef.UserName" Label="Username" Icon="mail_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-value="@objRef.EmailAddress" Label="Email" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+                <div class="form-group">
+                    <MatTextField @bind-value="@objRef.Name" Label="Name" Icon="lock_outline" IconTrailing="true" FullWidth="true" Required="true"></MatTextField>
+                </div>
+            </fieldset>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { dialogIsEdit = false; })">Cancel</MatButton>
+            <MatButton OnClick="@(e => { dialogIsEdit = false; })">Update</MatButton>
+        </MatDialogActions>
+    </MatDialog>
 }
 else
 {
@@ -75,14 +101,34 @@ else
 
 @functions {
     bool dialogIsOpen = false;
+    bool dialogIsEdit = false;
     protected bool IsLoggedIn;
     DemoUser[] users;
+    List<UserDto> userDtos = new List<UserDto>();
+    UserDto objRef = new UserDto { Name = "ABCD", EmailAddress= "Abcd@abcd.com"};
     RegisterParameters registerParameters { get; set; } = new RegisterParameters();
 
     protected override async Task OnInitAsync()
     {
         IsLoggedIn = await authState.IsLoggedIn();
-        users = await Http.GetJsonAsync<DemoUser[]>("api/SampleData/GetDemoUsers");
+        var usersTmp = await abpCoreService.UserGetAllAsync();
+        if (usersTmp != null && usersTmp.Count > 0)
+        {
+            // userDtos = usersTmp;
+            List<DemoUser> demoUsersTmp = new List<DemoUser>();
+            foreach (var u in usersTmp)
+            {
+                DemoUser dmUser = new DemoUser
+                {
+                    Id = (int)u.Id,
+                    UserName = u.UserName,
+                    Email = u.EmailAddress,
+                };
+                demoUsersTmp.Add(dmUser);
+            }
+            users = demoUsersTmp.ToArray<DemoUser>();
+            Console.WriteLine($"Total User:{users.Length}");
+        }
     }
 
     public void OpenDialog()
@@ -106,13 +152,29 @@ else
         }
     }
 
-    public void Edit()
+    public void Edit(int Id)
     {
-        matToaster.Add("Not Implemented", MatToastType.Danger, "User Edit Failed");
+        //objRef = null;
+        //foreach (var obj in userDtos)
+        //{
+        //    if (obj.Id == Id)
+        //    {
+        //        objRef = obj;
+        //        break;
+        //    }
+        //}
+        //matToaster.Add($"Not Implemented Edit {Id}", MatToastType.Danger, "User Edit Failed");
+
+        if (objRef != null)
+        {
+            dialogIsEdit = true;
+            Console.Write($"Edit User:{Id} {objRef.EmailAddress}");
+            StateHasChanged();
+        }
     }
 
-    public void Delete()
+    public void Delete(int Id)
     {
-        matToaster.Add("Not Implemented", MatToastType.Danger, "User Delete Failed");
+        matToaster.Add($"Not Implemented {Id}", MatToastType.Danger, "User Delete Failed");
     }
 }

@@ -4,10 +4,10 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using BlazorBoilerplate.Client.Services.Contracts;
+using BlazorBoilerplate.Shared.Services.Contracts;
 using BlazorBoilerplate.Shared;
 
-namespace BlazorBoilerplate.Client.States
+namespace BlazorBoilerplate.Shared.States
 {
     public class IdentityAuthenticationStateProvider : AuthenticationStateProvider
     {
@@ -17,7 +17,7 @@ namespace BlazorBoilerplate.Client.States
         public IdentityAuthenticationStateProvider(IAuthorizeApi authorizeApi)
         {
             this._authorizeApi = authorizeApi;
-            _userInfoCache = new UserInfo { IsAuthenticated = true, Username = "ABCD", };
+//            _userInfoCache = new UserInfo { IsAuthenticated = true, Username = "ABCD", };
         }
 
         public async Task<bool> IsLoggedIn()

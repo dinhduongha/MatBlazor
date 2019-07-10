@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorBoilerplate.Client.Services.Contracts
+namespace BlazorBoilerplate.Shared.Services.Contracts
 {
     public interface IAuthorizeApi
     {
