@@ -2,7 +2,7 @@
 @inject IUriHelper uriHelper
 @inject IdentityAuthenticationStateProvider authStateProvider
 
-<AuthorizeView>
+<AuthorizeView Context="AuthorizeContext">
     <Authorized>
         <MatTooltip Tooltip="Logout">
             <MatIconButton Icon="exit_to_app" RefBack="@context" OnClick="LogoutClick"></MatIconButton>
