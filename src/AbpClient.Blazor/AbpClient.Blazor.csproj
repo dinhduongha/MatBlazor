@@ -21,16 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AbpClient.Shared\AbpClient.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Shared\Breadcrumbs\" />
     <Folder Include="wwwroot\fonts\fontawesome\" />
     <Folder Include="wwwroot\javascript\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AbpClient.Common\AbpClient.Common.csproj" />
     <ProjectReference Include="..\MatBlazor\MatBlazor.csproj" />
   </ItemGroup>
 

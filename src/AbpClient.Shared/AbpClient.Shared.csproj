@@ -10,9 +10,4 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0-preview6.19303.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AbpClient.Common\AbpClient.Common.csproj" />
-    <ProjectReference Include="..\AbpClient.Core\AbpClient.Core.csproj" />
-  </ItemGroup>
-
 </Project>

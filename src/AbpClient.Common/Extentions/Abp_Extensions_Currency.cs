@@ -11,7 +11,7 @@ using AbpCommon.Dto;
 
 using Bamboo.AbpClient;
 
-namespace AbpClient.Shared.Extensions
+namespace AbpClient.Common.Extensions
 {
     public static class AbpExtensionsCurrencyService
     {
