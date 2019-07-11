@@ -25,20 +25,20 @@
                 <th>Email</th>
                 <th>Roles</th>
             </MatTableHeader>
-            <MatTableRow>
+            <MatTableRow Context="UserRow">
                 <td>
                     <div style="width:130px;">
-                        <MatIconButton Icon="edit" OnClick="@((e) => Edit(@context.Id))"></MatIconButton>
-                        <MatIconButton Icon="delete" OnClick="@((e) => Delete(@context.Id))"></MatIconButton>
+                        <MatIconButton Icon="edit" OnClick="@((e) => Edit(@UserRow.Id))"></MatIconButton>
+                        <MatIconButton Icon="delete" OnClick="@((e) => Delete(@UserRow.Id))"></MatIconButton>
                     </div>
                 </td>
-                <td><div style="width:130px;">@context.UserName</div></td>
-                <td>@context.Email</td>
+                <td><div style="width:130px;">@UserRow.UserName</div></td>
+                <td>@UserRow.Email</td>
                 <td>
                     <MatChipSet>
-                        @if (@context.Roles != null)
+                        @if (@UserRow.Roles != null)
                                 {
-                            @foreach (var role in @context.Roles)
+                            @foreach (var role in @UserRow.Roles)
                                     {
                                 <MatChip Label="@role"></MatChip>
                                     }

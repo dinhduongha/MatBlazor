@@ -61,6 +61,7 @@
                         <MatTooltip Tooltip="Github Repository">
                             <MatIconButton Link="https://github.com/enkodellc/blazorboilerplate" RefBack="@context"><i class="fa fa-github" aria-hidden="true"></i></MatIconButton>
                         </MatTooltip>
+                        <LoginControl></LoginControl>
                         @if (IsLoggedIn)
                         {
                             <MatTooltip Tooltip="Logout">
@@ -70,7 +71,7 @@
                         else
                         {
                             <MatTooltip Tooltip="Login">
-                                <MatIconButton Icon="account_box" RefBack="@context" Link="/login"></MatIconButton>
+                                <MatIconButton Icon="account_box" RefBack="@context" Link="/account/login"></MatIconButton>
                             </MatTooltip>
                         }
                     </MatAppBarSection>

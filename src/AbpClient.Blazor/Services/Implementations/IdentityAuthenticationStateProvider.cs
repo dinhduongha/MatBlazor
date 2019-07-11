@@ -87,13 +87,16 @@ namespace BlazorBoilerplate.Shared.States
                 var userInfo = await GetUserInfo();
                 if (userInfo.IsAuthenticated)
                 {
-                    identity = new ClaimsIdentity(new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, "Admin")
+                    _userInfoCache.ExposedClaims["Role"] = "Admin";
+                    _userInfoCache.ExposedClaims["Roles"] = "Admin";
+                    //identity = new ClaimsIdentity(new List<Claim>
+                    //{
+                    //    new Claim(ClaimTypes.Name, "Admin")
 
-                        }, "Server authentication");
-                    //var claims = new[] { new Claim(ClaimTypes.Name, _userInfoCache.Username) }.Concat(_userInfoCache.ExposedClaims.Select(c => new Claim(c.Key, c.Value)));
-                    //identity = new ClaimsIdentity(claims, "Server authentication");
+                    //}, "Server authentication");
+                    var claims = new[] { new Claim(ClaimTypes.Name, _userInfoCache.Username) }
+                                .Concat(_userInfoCache.ExposedClaims.Select(c => new Claim(c.Key, c.Value)));
+                    identity = new ClaimsIdentity(claims, "Server authentication");
                 }
             }
             catch (HttpRequestException ex)
