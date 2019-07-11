@@ -71,7 +71,20 @@ namespace BlazorBoilerplate.Shared.Services.Implementations
             //return result;
             return null;
         }
+        public async Task ConfirmEmail(ConfirmEmailParameters confirmEmailParameters)
+        {
+            //await _httpClient.PostJsonAsync<UserInfo>("api/Authorize/ConfirmEmail", confirmEmailParameters);
+        }
 
+        public async Task ResetPassword(ResetPasswordParameters resetPasswordParameters)
+        {
+            //await _httpClient.PostJsonAsync<UserInfo>("api/Authorize/ResetPassword", resetPasswordParameters);
+        }
+
+        public async Task ForgotPassword(ForgotPasswordParameters forgotPasswordParameters)
+        {
+            //await _httpClient.PostJsonAsync<UserInfo>("api/Authorize/ForgotPassword", forgotPasswordParameters);
+        }
         public async Task<UserInfo> GetUserInfo()
         {
             //var result = await _httpClient.GetJsonAsync<UserInfo>("api/Authorize/UserInfo");

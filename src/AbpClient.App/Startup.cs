@@ -1,12 +1,10 @@
-//using MatBlazor.Demo.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
-
 using MatBlazor;
-
-//using Blazored.LocalStorage;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+//using Blazored.LocalStorage;
+
 using Bamboo.AbpClient;
 using BlazorBoilerplate.Shared.Services.Contracts;
 using BlazorBoilerplate.Shared.Services.Implementations;
@@ -20,11 +18,9 @@ namespace AbpClient.App
         {
             services.AddAuthorizationCore();
             services.AddScoped<IdentityAuthenticationStateProvider>();
-            services.AddScoped<IdentityAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<IdentityAuthenticationStateProvider>());
             services.AddScoped<IAuthorizeApi, AuthorizeApi>();
-
-
+            
             //services.AddBlazoredLocalStorage();
             services.AddLoadingBar();
 
@@ -53,8 +49,8 @@ namespace AbpClient.App
 
         public void Configure(IComponentsApplicationBuilder app)
         {
+            //WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
             app.UseLoadingBar();
-
             app.AddComponent<App>("app");
         }
     }

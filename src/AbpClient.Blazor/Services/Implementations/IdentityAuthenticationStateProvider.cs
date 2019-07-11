@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using BlazorBoilerplate.Shared.Services.Contracts;
 using BlazorBoilerplate.Shared;
+using System.Collections.Generic;
 
 namespace BlazorBoilerplate.Shared.States
 {
     public class IdentityAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private UserInfo _userInfoCache;
+        private UserInfo _userInfoCache = null;
         private readonly IAuthorizeApi _authorizeApi;
 
         public IdentityAuthenticationStateProvider(IAuthorizeApi authorizeApi)
         {
             this._authorizeApi = authorizeApi;
-//            _userInfoCache = new UserInfo { IsAuthenticated = true, Username = "ABCD", };
         }
 
         public async Task<bool> IsLoggedIn()
@@ -52,9 +52,29 @@ namespace BlazorBoilerplate.Shared.States
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
+        public async Task ConfirmEmail(ConfirmEmailParameters confirmEmailParameters)
+        {
+            await _authorizeApi.ConfirmEmail(confirmEmailParameters);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+
+        public async Task ResetPassword(ResetPasswordParameters resetPasswordParameters)
+        {
+            await _authorizeApi.ResetPassword(resetPasswordParameters);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+
+        public async Task ForgotPassword(ForgotPasswordParameters forgotPasswordParameters)
+        {
+            await _authorizeApi.ForgotPassword(forgotPasswordParameters);
+        }
+
         public async Task<UserInfo> GetUserInfo()
         {
-            if (_userInfoCache != null && _userInfoCache.IsAuthenticated) return _userInfoCache;
+            if (_userInfoCache != null && _userInfoCache.IsAuthenticated)
+            {
+                return _userInfoCache;
+            }
             _userInfoCache = await _authorizeApi.GetUserInfo();
             return _userInfoCache;
         }
@@ -67,8 +87,13 @@ namespace BlazorBoilerplate.Shared.States
                 var userInfo = await GetUserInfo();
                 if (userInfo.IsAuthenticated)
                 {
-                    var claims = new[] { new Claim(ClaimTypes.Name, _userInfoCache.Username) }.Concat(_userInfoCache.ExposedClaims.Select(c => new Claim(c.Key, c.Value)));
-                    identity = new ClaimsIdentity(claims, "Server authentication");
+                    identity = new ClaimsIdentity(new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, "Admin")
+
+                        }, "Server authentication");
+                    //var claims = new[] { new Claim(ClaimTypes.Name, _userInfoCache.Username) }.Concat(_userInfoCache.ExposedClaims.Select(c => new Claim(c.Key, c.Value)));
+                    //identity = new ClaimsIdentity(claims, "Server authentication");
                 }
             }
             catch (HttpRequestException ex)

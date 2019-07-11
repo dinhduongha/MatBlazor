@@ -1,7 +1,8 @@
-﻿@page "/register"
+﻿@page "/account/register"
+
 @layout LoginLayout
 @inject IUriHelper uriHelper
-@inject IdentityAuthenticationStateProvider state
+@inject IdentityAuthenticationStateProvider authStateProvider
 @inject IMatToaster matToaster
 
 <MatCard>
@@ -31,28 +32,28 @@
                 <MatButton Type="submit" Raised="true">Create account</MatButton>
             </div>
             <hr />
-            <NavLink href="login">
+            <NavLink href="/account/login">
                 <h6 class="font-weight-normal text-center">Already have an account? Click here to login</h6>
             </NavLink>
         </fieldset>
     </EditForm>
 </MatCard>
 
-@code {
+@functions {
 
-  RegisterParameters registerParameters { get; set; } = new RegisterParameters();
+    RegisterParameters registerParameters { get; set; } = new RegisterParameters();
 
-  async Task RegisterUser()
-  {
-      try
-      {
-          await state.Register(registerParameters);
-          matToaster.Add("Your new user has been added", MatToastType.Success, "User Creation Sucessful");
-          uriHelper.NavigateTo("");
-      }
-      catch (Exception ex)
-      {
-          matToaster.Add(ex.Message, MatToastType.Danger, "User Creation Failed");
-      }
-  }
+    async Task RegisterUser()
+    {
+        try
+        {
+            await authStateProvider.Register(registerParameters);
+            matToaster.Add("New User Email Verification was sent to: " + registerParameters.Email, MatToastType.Success, "User Creation Sucessful");
+            uriHelper.NavigateTo("");
+        }
+        catch (Exception ex)
+        {
+            matToaster.Add(ex.Message, MatToastType.Danger, "User Creation Failed");
+        }
+    }
 }
